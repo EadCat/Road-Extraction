@@ -13,6 +13,7 @@ from dataloader import dataset
 from dataloader import dict_transforms
 from functions import loss_F
 from functions import utils
+from functions import augmentation
 from functions.plot import PlotGenerator
 from networks.nets import NetEnd, ResNet101_DeeplabV3, ResNet101_FCN
 
@@ -82,15 +83,17 @@ if __name__ == "__main__":
 
     # =========================================== image pre-processing & load ==========================================
     toronto_setting = transforms.Compose([dict_transforms.Resize(params['resized']),
-                                            dict_transforms.DictNormalize(gray=True,
-                                                                          mean=params['mean'],
-                                                                          std=params['std']),
-                                            dict_transforms.Dict2Tensor(two_dim=True)])
+                                          augmentation.AugManager(),
+                                          dict_transforms.DictNormalize(gray=True,
+                                                                        mean=params['mean'],
+                                                                        std=params['std']),
+                                          dict_transforms.Dict2Tensor(two_dim=True)])
     pix2pix_setting = transforms.Compose([dict_transforms.Resize(params['resized']),
-                                            dict_transforms.DictNormalize(gray=True,
-                                                                          mean=params['mean'],
-                                                                          std=params['std']),
-                                            dict_transforms.Dict2Tensor(two_dim=True)])
+                                          augmentation.AugManager(),
+                                          dict_transforms.DictNormalize(gray=True,
+                                                                        mean=params['mean'],
+                                                                        std=params['std']),
+                                          dict_transforms.Dict2Tensor(two_dim=True)])
 
     # training set
     train_set_Toronto = dataset.RoadDataset(data_dir=data_man.train(), label_dir=data_man.label('train'), transform=toronto_setting)
