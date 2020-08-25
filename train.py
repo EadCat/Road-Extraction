@@ -29,9 +29,9 @@ if __name__ == "__main__":
     environment = {}
     # ======================================= Directory Panel =============================================
     data_man = DataManager(os.getcwd())
-    mode = 'new'  # please set the mode. ['new', 'load', 'overlay']
-    load_branch = None  # need 'load' or 'overlay' mode. you can set integer here.
-    load_num = None  # need 'load' or 'overlay' mode. you can set integer here.
+    mode = 'overlay'  # please set the mode. ['new', 'load', 'overlay']
+    load_branch = 1  # need 'load' or 'overlay' mode. you can set integer here.
+    load_num = 40  # need 'load' or 'overlay' mode. you can set integer here.
     dir_man = DirectoryManager(model_name=model_name, mode=mode, branch_num=load_branch,
                                load_num=load_num)
     # =====================================================================================================

@@ -149,13 +149,13 @@ class DirectoryManager:
             return self.save_name
         else:
             if self.mode is 'load' and self.load_num is not None:
-                assert os.isfile(self.load_dir), "no weights file."
+                assert os.path.isfile(self.load_dir), "no weights file."
                 if make:
                     os.makedirs(self.branch_new, exist_ok=True)
                 self.save_name = os.path.join(self.branch_new, self.model_name+'_'+'epoch_')
                 return self.save_name
             elif self.mode is 'overlay' and self.load_num is not None:
-                assert os.isfile(self.load_dir), "no weights file."
+                assert os.path.isfile(self.load_dir), "no weights file."
                 self.save_name = os.path.join(self.load_root, self.model_name+'_'+'epoch_')
                 return self.save_name
             elif self.mode is 'test':

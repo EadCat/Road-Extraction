@@ -26,10 +26,10 @@ weight_save_directory = r'save'
 # ============================= model parameter control panel =============================
 # =============================== in training environment =================================
 params = OrderedDict()
-params['total_epochs'] = 40
+params['total_epochs'] = 100
 params['train_batch'] = 10
 params['valid_batch'] = 10
-params['learning_rate'] = 1e-5
+params['learning_rate'] = 5e-6
 params['num_classes'] = 1
 params['resized'] = (500, 500) # tuple
 params['mean'] = [0.485, 0.456, 0.406]
@@ -57,7 +57,7 @@ user_setting['test_processes'] = 8
 user_setting['validation_intervals'] = 1 # validating period epoch
 user_setting['model_store_intervals'] = 1 # storing period of model's info snapshot
 user_setting['epoch_store_intervals'] = 1
-user_setting['iter_print_intervals'] = 50
+user_setting['iter_print_intervals'] = 10
 user_setting['img_save_intervals'] = 1 # epoch
 # =========================================================================================
 
