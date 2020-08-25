@@ -21,7 +21,7 @@ import numpy as np
 if __name__ == "__main__":
     # directory
     data_man = DataManager(os.getcwd())  # Get test data directory
-    epoch = 20  # epoch number of model you want to test.
+    epoch = 63  # epoch number of model you want to test.
     branch_num = 1
     dir_man = DirectoryManager(model_name, mode='test', branch_num=branch_num, load_num=epoch)  # model_name is defined in <parameters.py>.
 
@@ -113,13 +113,20 @@ if __name__ == "__main__":
     # print test spending time.
     print(f'{time.perf_counter() - test_start:.3f} s spended.')
 
-    # plot
+    # plot data processing : iterable -> dictionary
     prec_Data = iter2dict(confidence, precision)
     reca_Data = iter2dict(confidence, recall)
     PR_Data = iter2dict(recall, precision)
     loss_Data = loss_dict
     accu_Data = iter2dict(confidence, accuracy)
 
+    # record
+    util.write_line(prec_Data, os.path.join(dir_man.test(), 'Precision.txt'))
+    util.write_line(reca_Data, os.path.join(dir_man.test(), 'Recall.txt'))
+    util.write_line(PR_Data, os.path.join(dir_man.test(), 'PR Curve.txt'))
+    util.write_line(accu_Data, os.path.join(dir_man.test(), 'Accuracy.txt'))
+
+    # plot
     prec_plot = PlotGenerator(1, 'precision', (20, 15), xlabel='confidence', ylabel='precision')
     prec_plot.add_data(prec_Data)
     prec_plot.add_set(name='precision', color='r')

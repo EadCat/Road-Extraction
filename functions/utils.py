@@ -14,10 +14,15 @@ def snapshot_maker(param_dict, dir:str):
 def write_line(dict_in:dict, dir:str):
     # record loss in real time.
     import os
+    import torch
     os.makedirs(os.path.dirname(dir), exist_ok=True)
 
     with open(dir, 'a') as file:
         for key, value in dict_in.items():
+            if isinstance(key, torch.Tensor):
+                key = round(float(key), 4)
+            if isinstance(value, torch.Tensor):
+                value = float(value)
             file.write(str(key) + ' : ' + str(round(value, 4)) + '\n')
 
 
