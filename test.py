@@ -21,8 +21,10 @@ import numpy as np
 if __name__ == "__main__":
     # directory
     data_man = DataManager(os.getcwd())  # Get test data directory
-    epoch = 63  # epoch number of model you want to test.
-    branch_num = 1
+    # ===================================== load weights targeting panel =====================================
+    epoch = 100  # epoch number of model you want to test.
+    branch_num = 2
+    # =========================================================================================================
     dir_man = DirectoryManager(model_name, mode='test', branch_num=branch_num, load_num=epoch)  # model_name is defined in <parameters.py>.
 
     # load trained model
@@ -127,7 +129,7 @@ if __name__ == "__main__":
     util.write_line(reca_Data, os.path.join(dir_man.test(), 'Recall.txt'))
     util.write_line(PR_Data, os.path.join(dir_man.test(), 'PR Curve.txt'))
     util.write_line(accu_Data, os.path.join(dir_man.test(), 'Accuracy.txt'))
-    util.write_line(f1_score, os.path.join(dir_man.test(), 'F1 Score.txt'))
+    util.write_line(f1_Data, os.path.join(dir_man.test(), 'F1 Score.txt'))
 
     # plot
     prec_plot = PlotGenerator(1, 'precision', (20, 15), xlabel='confidence', ylabel='precision')
