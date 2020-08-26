@@ -62,6 +62,8 @@ if __name__ == "__main__":
 
     assert params['total_epochs'] >= params['resume_epoch'], 'please check resume start point.'
     # ==============================================================================================================
+    print(f'branch number : {dir_man.branch_info()}')
+    print(f'model name: {dir_man.name_info()}')
 
     # ================================= GPU setting =================================
     if torch.cuda.is_available():
@@ -100,6 +102,7 @@ if __name__ == "__main__":
     train_set_Pix = dataset.RoadDataset(data_dir=data_man.train(), label_dir=data_man.label('train'), transform=pix2pix_setting,
                                         dataname_extension='*.jpg', labelname_extension='*.jpg')
     train_set = train_set_Toronto + train_set_Pix
+    print(f'train data : {len(train_set)} files detected.')
     train_loader = DataLoader(dataset=train_set, batch_size=params['train_batch'],
                               shuffle=permission['shuffle'], num_workers=user_setting['train_processes'])
 
@@ -109,6 +112,7 @@ if __name__ == "__main__":
         valid_set_Pix = dataset.RoadDataset(data_dir=data_man.validation(), label_dir=data_man.label('valid'), transform=pix2pix_setting,
                                             dataname_extension='*.jpg', labelname_extension='*.jpg')
         valid_set = valid_set_Toronto + valid_set_Pix
+        print(f'validation data : {len(valid_set)} files detected.')
         valid_loader = DataLoader(dataset=valid_set, batch_size=params['valid_batch'],
                                   shuffle=False, num_workers=user_setting['valid_processes'])
     # ==================================================================================================================

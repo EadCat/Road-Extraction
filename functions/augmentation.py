@@ -39,7 +39,7 @@ class AugManager(object):
             iaa.Affine(scale=self.outscale),  # zoom out
             RandomCrop(y_max, x_max).cut()  # zoom in
         ])
-        image, label = zoomset(image=image, segmetation_maps=label)
+        image, label = zoomset(image=image, segmentation_maps=label)
         image, label = self.transformSet(image=image, segmentation_maps=label)
 
         # imgaug.augmentables.segmaps.SegmentationMapsOnImage -> np.ndarray

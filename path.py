@@ -114,6 +114,12 @@ class DirectoryManager:
         else:
             print('Illegal mode.')
 
+    def branch_info(self):
+        return self.branch_num
+
+    def name_info(self):
+        return self.model_name
+
     def update(self, branch_num=None, load_num=None):  # no return
         # update the manager corresponding to the mode.
         self.branch_list = sorted(glob.glob(os.path.join(self.weight_dir, 'branch_*')))
@@ -121,6 +127,7 @@ class DirectoryManager:
 
         if self.mode is 'new':
             self.branch_new = os.path.join(self.weight_dir, 'branch_' + str(self.branch_last + 1))
+            self.branch_num = self.branch_last + 1
         else:
             assert branch_num is not None, 'check load branch number.'
             assert load_num is not None, 'check load epoch number.'

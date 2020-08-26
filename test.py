@@ -67,6 +67,7 @@ if __name__ == "__main__":
                                        transform=pix2pix_setting,
                                        dataname_extension='*.jpg', labelname_extension='*.jpg')
     test_set = test_set_Toronto + test_set_Pix
+    print(f'test data : {len(test_set)} files detected.')
     test_loader = DataLoader(dataset=test_set, batch_size=test_params['test_batch'],
                              shuffle=False, num_workers=user_setting['test_processes'])
 
