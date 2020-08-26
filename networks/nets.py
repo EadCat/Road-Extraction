@@ -44,6 +44,31 @@ class ResNet101_DeeplabV3(nn.Module):
 
         return self.output
 
+
+class ResNet50_DeeplabV3(nn.Module):
+    def __init__(self, end_module, keyword='out', pretrain=False):
+        super(ResNet50_DeeplabV3, self).__init__()
+        self.deeplab = models.deeplabv3_resnet50(pretrained=pretrain,
+                                                 progress=True,
+                                                 num_classes=21)
+        self.end_module = end_module
+        self.output = None
+        self.key = keyword
+
+    def forward(self, x):
+        if isinstance(x, OrderedDict):
+            self.output = self.deeplab(x[self.key])
+        else:
+            self.output = self.deeplab.forward(x)
+
+        if isinstance(self.output, OrderedDict):
+            self.output = self.end_module.forward(self.output[self.key])
+        else:
+            self.output = self.end_module.forward(self.output)
+
+        return self.output
+
+
 class ResNet101_FCN(nn.Module):
     def __init__(self, end_module, keyword='out', pretrain=False):
         super(ResNet101_FCN, self).__init__()
