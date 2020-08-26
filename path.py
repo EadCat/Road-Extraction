@@ -54,9 +54,9 @@ class DataManager:
 
 class DirectoryManager:
     # Saving Directory Manager
-    def __init__(self, model_name, mode='new', branch_num=None, load_num=None):
+    def __init__(self, model_name, mode='new', branch_num=None, load_num=None, external_weight=None):
 
-        # mode : 'new', 'load', 'overlay', 'test'
+        # mode : 'new', 'load', 'overlay', 'test', 'external_train', 'external_test'
         # branch_num : target branch folder number for 'load' or 'overlay' or 'test'
         # load_num : target epoch number for 'load' or 'overlay' or 'test'
         self.root_dir = os.getcwd()
@@ -75,7 +75,7 @@ class DirectoryManager:
         self.load_dir = None
         self.save_name = None
 
-        self.update(branch_num, load_num)
+        self.update(branch_num, load_num, external_weight)
 
         self.save_name = None
 
@@ -86,7 +86,7 @@ class DirectoryManager:
         print('path.DirectoryManager class instance')
         print(f'model name =========> : {self.model_name}')
         print(f'directory mode =====> : {self.mode}')
-        print(f'new branch number ==> : {self.branch_num}')
+        print(f'branch number ======> : {self.branch_num}')
         print(f'load number ========> : {self.load_num}')
         print(f'save directory =====> : {self.save_dir(make=False)}')
 
@@ -107,7 +107,8 @@ class DirectoryManager:
 
     def branch(self):
         # return : store branch directory
-        if self.mode is 'new' or self.mode is 'load':
+        if self.mode is 'new' or self.mode is 'load' or \
+                self.mode is 'external_train' or self.mode is 'external_test':
             return self.branch_new
         elif self.mode is 'overlay' or self.mode is 'test':
             return self.load_root
@@ -120,14 +121,22 @@ class DirectoryManager:
     def name_info(self):
         return self.model_name
 
-    def update(self, branch_num=None, load_num=None):  # no return
+    def update(self, branch_num=None, load_num=None, external_weight=None):  # no return
         # update the manager corresponding to the mode.
         self.branch_list = sorted(glob.glob(os.path.join(self.weight_dir, 'branch_*')))
         self.branch_last = len(self.branch_list)
 
         if self.mode is 'new':
-            self.branch_new = os.path.join(self.weight_dir, 'branch_' + str(self.branch_last + 1))
             self.branch_num = self.branch_last + 1
+            self.branch_new = os.path.join(self.weight_dir, 'branch_' + str(self.branch_num))
+
+        elif self.mode is 'external_train' or self.mode is 'external_test':
+            assert external_weight is not None, "check external weight directory."
+            self.branch_num = self.branch_last + 1
+            self.branch_new = os.path.join(self.weight_dir, 'branch_' + str(self.branch_num))
+            self.load_dir = external_weight
+            self.load_num = None
+
         else:
             assert branch_num is not None, 'check load branch number.'
             assert load_num is not None, 'check load epoch number.'
@@ -149,7 +158,7 @@ class DirectoryManager:
                 print(f'Illegal mode.')
 
     def save_dir(self, make=True):  # using save pth file. (only)
-        if self.mode is 'new':
+        if self.mode is 'new' or self.mode is 'external_train':
             if make:
                 os.makedirs(self.branch_new, exist_ok=True)
             self.save_name = os.path.join(self.branch_new, self.model_name+'_'+'epoch_')
@@ -165,8 +174,8 @@ class DirectoryManager:
                 assert os.path.isfile(self.load_dir), "no weights file."
                 self.save_name = os.path.join(self.load_root, self.model_name+'_'+'epoch_')
                 return self.save_name
-            elif self.mode is 'test':
-                print("Directory manager's mode is 'test' now.")
+            elif self.mode is 'test' or self.mode is 'external_test':
+                print("Directory manager's mode is 'test' or 'external test' now.")
                 print("you don't need to save .pth weight file.")
             else:
                 print(f'Illegal directory selection inputs. check mode and load_num.')

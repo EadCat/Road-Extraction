@@ -15,7 +15,7 @@ from functions import loss_F
 from functions import utils
 from functions import augmentation
 from functions.plot import PlotGenerator
-from networks.nets import NetEnd, ResNet101_DeeplabV3, ResNet101_FCN
+from networks.nets import NetEnd, ResNet101_DeeplabV3, ResNet101_FCN, ResNet50_DeeplabV3
 
 # Basic Utility
 import os
@@ -44,15 +44,27 @@ if __name__ == "__main__":
         netend = net.NetEnd(num_classes=params['num_classes'])
         network = net.ResNet101_DeeplabV3(netend, pretrain=permission['pretrain']) # <- model definition
 
+    elif mode is 'external_train':
+        print('start training from epoch 1.')
+        params['resume_epoch'] = 1
+        print('constructing network...')
+        netend = net.NetEnd(num_classes=params['num_classes'])
+        network = net.ResNet50_DeeplabV3(netend, pretrain=False)
+        path = dir_man.load()
+        print(f'{dir_man.load()} loading...')
+        network.load_state_dict((torch.load(path)))
+
     elif mode is 'load' or mode is 'overlay':
         assert load_branch is not None, 'check load_branch.'
         assert load_num is not None, 'check load_num.'
         print('loading weights file...')
         params['resume_epoch'] = load_num + 1
         # model load
+        print('constructing network...')
         netend = NetEnd(num_classes=params['num_classes'])
         path = dir_man.load()
         network = ResNet101_DeeplabV3(end_module=netend, pretrain=permission['pretrain']) # <- model definition
+        print(f'{dir_man.load()} loading...')
         network.load_state_dict((torch.load(path)))
 
     else:
@@ -62,6 +74,7 @@ if __name__ == "__main__":
 
     assert params['total_epochs'] >= params['resume_epoch'], 'please check resume start point.'
     # ==============================================================================================================
+    print('network has been constructed.')
     print(f'branch number : {dir_man.branch_info()}')
     print(f'model name: {dir_man.name_info()}')
 

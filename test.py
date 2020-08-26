@@ -22,9 +22,11 @@ if __name__ == "__main__":
     # directory
     data_man = DataManager(os.getcwd())  # Get test data directory
     # ===================================== load weights targeting panel =====================================
+    # if mode is 'test', must be set.
     epoch = 100  # epoch number of model you want to test.
     branch_num = 2
     # =========================================================================================================
+    # if mode is 'external_test', DirectoryManager(external_weight= set here!!)
     dir_man = DirectoryManager(model_name, mode='test', branch_num=branch_num, load_num=epoch)  # model_name is defined in <parameters.py>.
 
     # load trained model
@@ -112,7 +114,6 @@ if __name__ == "__main__":
     util.snapshot_maker(test_params, os.path.join(dir_man.test(), 'test_model_snapshot.txt'))
 
     precision, recall, accuracy, f1_score, confidence = evaluator.view()
-
 
     # print test spending time.
     print(f'{time.perf_counter() - test_start:.3f} s spended.')
