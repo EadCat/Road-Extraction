@@ -235,7 +235,7 @@ if __name__ == "__main__":
                                      os.path.join(dir_man.branch(), 'history', model_name+'_valid'+'.txt'))
                 iter_loss = 0.0
         # ========================================= validating ==============================================
-        print(f'eta : {time.perf_counter()-epoch_start:.3f}s')
+        print(f'{time.perf_counter()-epoch_start:.3f} seconds spended.')
     # =========================== training epoch ===============================
 
     # =================================== plot =======================================
