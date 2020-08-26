@@ -108,7 +108,8 @@ if __name__ == "__main__":
     # test parameter record
     util.snapshot_maker(test_params, os.path.join(dir_man.test(), 'test_model_snapshot.txt'))
 
-    precision, recall, accuracy, confidence = evaluator.view()
+    precision, recall, accuracy, f1_score, confidence = evaluator.view()
+
 
     # print test spending time.
     print(f'{time.perf_counter() - test_start:.3f} s spended.')
@@ -119,12 +120,14 @@ if __name__ == "__main__":
     PR_Data = iter2dict(recall, precision)
     loss_Data = loss_dict
     accu_Data = iter2dict(confidence, accuracy)
+    f1_Data = iter2dict(confidence, f1_score)
 
     # record
     util.write_line(prec_Data, os.path.join(dir_man.test(), 'Precision.txt'))
     util.write_line(reca_Data, os.path.join(dir_man.test(), 'Recall.txt'))
     util.write_line(PR_Data, os.path.join(dir_man.test(), 'PR Curve.txt'))
     util.write_line(accu_Data, os.path.join(dir_man.test(), 'Accuracy.txt'))
+    util.write_line(f1_score, os.path.join(dir_man.test(), 'F1 Score.txt'))
 
     # plot
     prec_plot = PlotGenerator(1, 'precision', (20, 15), xlabel='confidence', ylabel='precision')
@@ -159,7 +162,13 @@ if __name__ == "__main__":
     loss_plot.plot()
     loss_plot.save(os.path.join(dir_man.test_graph(), 'BCELoss.jpg'))
 
-    accu_plot = PlotGenerator(6, 'Accuracy', (20, 15), xlabel='confidence', ylabel='accuracy')
+    f1_plot = PlotGenerator(6, 'F1 Score', (20, 15), xlabel='confidence', ylabel='F1 Score')
+    f1_plot.add_data(f1_Data)
+    f1_plot.add_set(name='F1 Score', color='m')
+    f1_plot.plot()
+    f1_plot.save(os.path.join(dir_man.test_graph(), 'F1 Score.jpg'))
+
+    accu_plot = PlotGenerator(7, 'Accuracy', (20, 15), xlabel='confidence', ylabel='accuracy')
     accu_plot.add_data(accu_Data)
     accu_plot.add_set(name='Accuracy', color='k')
     accu_plot.plot()
