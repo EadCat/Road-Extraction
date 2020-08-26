@@ -92,6 +92,7 @@ class Resize(object):
         return {tag_image : image,
                 tag_label : label}
 
+
 class AlphaKill(object):
     # kill alpha channel 4D -> 3D
     def __init__(self):

@@ -5,7 +5,6 @@ if __name__ == '__main__':
     from parameters import *
     from dataloader.dataset import RoadDataset
 
-
     train_dir = os.path.join(os.getcwd(), train_directory)
     label_dir = os.path.join(train_dir, label_folder_name)
     augsave_dir = os.path.join(os.getcwd(), r'data/aug')
@@ -13,7 +12,7 @@ if __name__ == '__main__':
     dataset_pix = RoadDataset(data_dir=train_dir, label_dir=label_dir,
                               dataname_extension='*.jpg', labelname_extension='*.jpg')
 
-    num_aug = 5
+    num_aug = 3
     augset = AugManager()
 
     for i, data in enumerate(dataset_toronto):
