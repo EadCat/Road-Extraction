@@ -1,6 +1,6 @@
 import datetime
 import numpy as np
-
+from typing import Union
 
 def snapshot_maker(param_dict, dir:str):
     # record <.pth> model infomation snapshot.
@@ -39,7 +39,7 @@ def tensorview(Intensor, batch_idx):
     print(arr[batch_idx])
 
 
-def imgstore(Intensor, nums:int, save_dir:str, epoch:int, filename='', cls='pred'):
+def imgstore(Intensor, nums:int, save_dir:str, epoch:Union[int, str], filename='', cls='pred'):
     # function for saving prediction image.
     import os
     import cv2
@@ -57,8 +57,14 @@ def imgstore(Intensor, nums:int, save_dir:str, epoch:int, filename='', cls='pred
         img_list.append(img)
 
     if isinstance(filename, str):  # stores only one image, batch == 1
-        cv2.imwrite(os.path.join(save_dir, cls+'_'+'epoch_'+str(epoch)+'_['+filename+'].png'), img_list[0])
+        if isinstance(epoch, str):
+            cv2.imwrite(os.path.join(save_dir, cls + '_' + epoch + '_[' + filename + '].png'), img_list[0])
+        else:
+            cv2.imwrite(os.path.join(save_dir, cls+'_'+'epoch_'+str(epoch)+'_['+filename+'].png'), img_list[0])
 
     elif isinstance(filename, list):  # stores <nums:int> images, batch > 1
         for idx, unit in enumerate(img_list):
-            cv2.imwrite(os.path.join(save_dir, cls+'_'+'epoch_'+str(epoch)+'_['+filename[idx]+'].png'), unit)
+            if isinstance(epoch, str):
+                cv2.imwrite(os.path.join(save_dir, cls + '_' + epoch + '_[' + filename[idx] + '].png'), unit)
+            else:
+                cv2.imwrite(os.path.join(save_dir, cls+'_'+'epoch_'+str(epoch)+'_['+filename[idx]+'].png'), unit)
