@@ -66,5 +66,6 @@ def imgstore(Intensor, nums:int, save_dir:str, epoch:Union[int, str], filename='
         for idx, unit in enumerate(img_list):
             if isinstance(epoch, str):
                 cv2.imwrite(os.path.join(save_dir, cls + '_' + epoch + '_[' + filename[idx] + '].png'), unit)
+                print(f"{os.path.join(save_dir, cls+'_'+epoch+'_['+filename[idx]+'].png')} saved.")
             else:
                 cv2.imwrite(os.path.join(save_dir, cls+'_'+'epoch_'+str(epoch)+'_['+filename[idx]+'].png'), unit)

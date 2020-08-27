@@ -7,16 +7,13 @@ __all__ = ['MetaDataset', 'RoadDataset']
 
 
 class MetaDataset(Dataset):
-    def __init__(self, data_dir, transform=None, dataname_extension=None):
+    def __init__(self, data_dir, transform=None, dataname_extension='*.jpg'):
         super(MetaDataset).__init__()
         self.data_dir = data_dir
         self.transform = transform
-        if dataname_extension is None:
-            self.data_list = sorted(glob.glob(os.path.join(self.data_dir, '*')))
-            self.data_name = [os.path.splitext(data)[0] for data in self.data_list]
-        else:
-            self.data_list = sorted(glob.glob(os.path.join(data_dir, dataname_extension), recursive=False))
-            self.data_name = [os.path.splitext(data)[0] for data in self.data_list]
+
+        self.data_list = sorted(glob.glob(os.path.join(data_dir, dataname_extension), recursive=False))
+        self.data_name = [os.path.splitext(os.path.basename(data))[0] for data in self.data_list]
 
     def __len__(self):
         return len(self.data_list)
@@ -35,8 +32,8 @@ class MetaDataset(Dataset):
                 print()
 
     def __getitem__(self, idx):
-        img, label, name = self.make_triplet(idx)
-        sample = {tag_image: img, tag_label: label}
+        img, name = self.make_pair(idx)
+        sample = {tag_image: img}
 
         if self.transform is not None:
             sample = self.transform(sample)
@@ -48,14 +45,13 @@ class MetaDataset(Dataset):
     def data_list(self):
         return self.data_name
 
-    def make_triplet(self, idx):
+    def make_pair(self, idx):
         from PIL import Image
 
         img = Image.open(self.data_list[idx])
-        gt = None
         name = self.data_name[idx]
 
-        return img, gt, name
+        return img, name
 
 
 class RoadDataset(MetaDataset):
@@ -71,6 +67,17 @@ class RoadDataset(MetaDataset):
 
         self.label_dir = label_dir
         self.label_gray = label_gray
+
+    def __getitem__(self, idx):
+        img, label, name = self.make_triplet(idx)
+        sample = {tag_image: img, tag_label: label}
+
+        if self.transform is not None:
+            sample = self.transform(sample)
+
+        sample[tag_name] = name
+
+        return sample
 
     def make_triplet(self, idx):
         from PIL import Image

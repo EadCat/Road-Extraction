@@ -32,8 +32,7 @@ class Normalize(object):
         image -= self.mean
         image /= self.std
 
-        return {tag_image : image,
-                tag_label : None}
+        return {tag_image : image}
 
 
 class DictNormalize(Normalize):
@@ -81,8 +80,7 @@ class ToTensor(object):
         image = image.transpose((2, 0, 1))
         torch_image = torch.from_numpy(image).float()
 
-        return {tag_image: torch_image,
-                tag_label: None}
+        return {tag_image: torch_image}
 
 
 class Dict2Tensor(ToTensor):
@@ -136,8 +134,7 @@ class Resize(object):
             image = Image.fromarray(image)
             image = image.resize(self.size, self.image_mode)
 
-        return {tag_image : image,
-                tag_label : None}
+        return {tag_image : image}
 
 
 class DictResize(Resize):
@@ -172,8 +169,7 @@ class AlphaKill(object):
             image = Image.fromarray(image)
             image = image.convert('RGB')
 
-        return {tag_image : image,
-                tag_label : None}
+        return {tag_image : image}
 
 
 class DictAlphaKill(AlphaKill):

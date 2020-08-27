@@ -5,35 +5,42 @@ import os
 from parameters import *
 from networks.nets import *
 from dataloader.dataset import MetaDataset
-from dataloader.dict_transforms import *
+from dataloader import dict_transforms
 import functions.utils as util
 
 if __name__ == "__main__":
     # ------------------------------------------------------------------------------------------------------------------
 
     # ========================================== dir & param ==========================================
-    data_dir = './'
-    weight_dir = './'
-    dst_dir = './'
+    data_dir = r'/home/user/Desktop/test_dataset'
+    weight_dir = r'./save/branch_3/ResNet101-DeepLabV3_epoch_117.pth'
+    dst_dir = os.path.join(data_dir, 'predicton')
     store_num = 10
     the_name = os.path.splitext(os.path.basename(weight_dir))[0]
-    assert params['test_batch'] >= store_num, 'batch size must be bigger than the number of storing image.'
+    assert test_params['test_batch'] >= store_num, 'batch size must be bigger than the number of storing image.'
     # =================================================================================================
 
     # ------------------------------------------------------------------------------------------------------------------
 
     # =========================================== transform ===========================================
-    transform_set = transforms.Compose([Resize(params['resized']),
-                                        Normalize(mean=params['mean'], std=params['std']),
-                                        ToTensor()])
+    transform_set1 = transforms.Compose([dict_transforms.Resize(params['resized']),
+                                         dict_transforms.Normalize(mean=params['mean'], std=params['std']),
+                                         dict_transforms.ToTensor()])
+    transform_set2 = transforms.Compose([dict_transforms.AlphaKill(),
+                                         dict_transforms.Resize(params['resized']),
+                                         dict_transforms.Normalize(mean=params['mean'], std=params['std']),
+                                         dict_transforms.ToTensor()])
     # =================================================================================================
 
     # ------------------------------------------------------------------------------------------------------------------
 
     # ============================================ Dataset ============================================
-    pred_data = MetaDataset(data_dir=data_dir, transform=transform_set)
+    pred_data1 = MetaDataset(data_dir=data_dir, transform=transform_set1, dataname_extension='*.jpg')
+    pred_data2 = MetaDataset(data_dir=data_dir, transform=transform_set2, dataname_extension='*.png')
+    pred_data = pred_data1 + pred_data2
     data_loader = DataLoader(dataset=pred_data, batch_size=test_params['test_batch'],
                              shuffle=False, num_workers=user_setting['test_processes'])
+    print(f'{len(pred_data)} data detected.')
     # =================================================================================================
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -61,7 +68,8 @@ if __name__ == "__main__":
     # =================================================================================================
 
     # ------------------------------------------------------------------------------------------------------------------
-
+    os.makedirs(dst_dir, exist_ok=True)
+    print(f'save directory : {dst_dir}')
     # ============================================ run ================================================
     model.eval()
     for i, data in enumerate(data_loader):
