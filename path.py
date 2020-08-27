@@ -1,4 +1,7 @@
 import os, glob
+from typing import Union
+import numpy as np
+from PIL import Image
 
 from parameters import *
 
@@ -54,13 +57,13 @@ class DataManager:
 
 class DirectoryManager:
     # Saving Directory Manager
-    def __init__(self, model_name, mode='new', branch_num=None, load_num=None, external_weight=None):
+    def __init__(self, model_name, mode='new', branch_num:int=None, load_num:int=None, external_weight:str=None):
 
         # mode : 'new', 'load', 'overlay', 'test', 'external_train', 'external_test'
         # branch_num : target branch folder number for 'load' or 'overlay' or 'test'
         # load_num : target epoch number for 'load' or 'overlay' or 'test'
         self.root_dir = os.getcwd()
-        self.weight_dir = os.path.join(self.root_dir, weight_save_directory)
+        self.weight_dir = os.path.join(self.root_dir, save_directory)
         self.model_name = model_name
         self.mode = mode
 
@@ -206,3 +209,32 @@ class DirectoryManager:
     def test_graph(self): # test graph store directory
         os.makedirs(os.path.join(self.test(), 'graph'), exist_ok=True)
         return os.path.join(self.test(), 'graph')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

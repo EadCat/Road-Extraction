@@ -3,7 +3,7 @@ import os
 
 __all__ = ['model_name', 'tag_image', 'tag_label', 'tag_name',
            'train_directory', 'test_directory', 'valid_directory', 'label_folder_name',
-           'weight_save_directory', 'params', 'test_params', 'user_setting', 'permission'
+           'save_directory', 'params', 'test_params', 'user_setting', 'permission'
            ]
 
 # model name information for save and load
@@ -20,8 +20,9 @@ test_directory = r'data/test'
 valid_directory = r'data/validation'
 label_folder_name = r'labels'
 
+
 # directory for saving results of model running
-weight_save_directory = r'save'
+save_directory = r'save'
 
 # ============================= model parameter control panel =============================
 # =============================== in training environment =================================

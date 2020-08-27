@@ -12,7 +12,7 @@ if __name__ == '__main__':
     dataset_pix = RoadDataset(data_dir=train_dir, label_dir=label_dir,
                               dataname_extension='*.jpg', labelname_extension='*.jpg')
 
-    num_aug = 3
+    num_aug = 1
     augset = AugManager()
 
     for i, data in enumerate(dataset_toronto):
@@ -25,3 +25,6 @@ if __name__ == '__main__':
             augset.augstore(data, augsave_dir, identifier=j+1,
                             dataname_extension='.jpg', labelname_extension='.jpg')
         print(f'pix2pix: {(i+1)/len(dataset_pix) * 100 : .2f} % done.')
+
+
+

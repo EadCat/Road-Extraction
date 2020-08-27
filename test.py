@@ -52,12 +52,12 @@ if __name__ == "__main__":
     # dataloader
     # handle with care, always keep the dimensions of your images in mind.
     print('test data processing...')
-    toronto_setting = transforms.Compose([dict_transforms.Resize(params['resized']),
+    toronto_setting = transforms.Compose([dict_transforms.DictResize(params['resized']),
                                           dict_transforms.DictNormalize(gray=True,
                                                                         mean=params['mean'],
                                                                         std=params['std']),
                                           dict_transforms.Dict2Tensor(two_dim=True)])
-    pix2pix_setting = transforms.Compose([dict_transforms.Resize(params['resized']),
+    pix2pix_setting = transforms.Compose([dict_transforms.DictResize(params['resized']),
                                           dict_transforms.DictNormalize(gray=True,
                                                                         mean=params['mean'],
                                                                         std=params['std']),
