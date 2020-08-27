@@ -97,14 +97,14 @@ if __name__ == "__main__":
     # ===============================================================================
 
     # =========================================== image pre-processing & load ==========================================
-    toronto_setting = transforms.Compose([dict_transforms.Resize(params['resized']),
-                                          augmentation.AugManager(),
+    toronto_setting = transforms.Compose([augmentation.AugManager(),
+                                          dict_transforms.DictResize(params['resized']),
                                           dict_transforms.DictNormalize(gray=True,
                                                                         mean=params['mean'],
                                                                         std=params['std']),
                                           dict_transforms.Dict2Tensor(two_dim=True)])
-    pix2pix_setting = transforms.Compose([dict_transforms.Resize(params['resized']),
-                                          augmentation.AugManager(),
+    pix2pix_setting = transforms.Compose([augmentation.AugManager(),
+                                          dict_transforms.DictResize(params['resized']),
                                           dict_transforms.DictNormalize(gray=True,
                                                                         mean=params['mean'],
                                                                         std=params['std']),

@@ -6,28 +6,23 @@ from parameters import *
 __all__ = ['RoadDataset']
 
 
-class RoadDataset(Dataset):
-    def __init__(self, data_dir, label_dir, transform=None, dataname_extension='*.tiff', labelname_extension='*.tif',
-                 label_gray=True):
-        super(RoadDataset, self).__init__()
-
-        ext_len = len(dataname_extension) - 1
-        self.data_list = sorted(glob.glob(os.path.join(data_dir, dataname_extension), recursive=False))
-        self.label_list = sorted(glob.glob(os.path.join(label_dir, labelname_extension), recursive=False))
-        self.data_name = [os.path.basename(data)[:-ext_len] for data in self.data_list]
-
-        assert len(self.data_list) == len(self.label_list), 'The number of data and label must be equal.'
-
+class MetaDataset(Dataset):
+    def __init__(self, data_dir, transform=None, dataname_extension=None):
+        super(MetaDataset).__init__()
         self.data_dir = data_dir
-        self.label_dir = label_dir
         self.transform = transform
-        self.label_gray = label_gray
+        if dataname_extension is None:
+            self.data_list = sorted(glob.glob(os.path.join(self.data_dir, '*')))
+            self.data_name = [os.path.splitext(data)[0] for data in self.data_list]
+        else:
+            self.data_list = sorted(glob.glob(os.path.join(data_dir, dataname_extension), recursive=False))
+            self.data_name = [os.path.splitext(data)[0] for data in self.data_list]
 
     def __len__(self):
         return len(self.data_list)
 
     def __str__(self):
-        print('instance of dataloader.dataset.RoadDataset.')
+        print('instance of dataloader.dataset.PredDataset.')
         for i, name in enumerate(self.data_name):
             print(f'{self.data_name[i]}, ', end='')
             if i % 5 == 4:
@@ -57,10 +52,34 @@ class RoadDataset(Dataset):
         from PIL import Image
 
         img = Image.open(self.data_list[idx])
-        if self.label_gray:
-            target = Image.open(self.label_list[idx]).convert('L')
-        else:
-            target = Image.open(self.label_list[idx])
+        gt = None
         name = self.data_name[idx]
 
-        return img, target, name
+        return img, gt, name
+
+
+class RoadDataset(MetaDataset):
+    def __init__(self, data_dir, label_dir, transform=None, dataname_extension='*.tiff', labelname_extension='*.tif',
+                 label_gray=True):
+        super().__init__(data_dir=data_dir, transform=transform, dataname_extension=dataname_extension)
+
+        self.data_list = sorted(glob.glob(os.path.join(data_dir, dataname_extension), recursive=False))
+        self.label_list = sorted(glob.glob(os.path.join(label_dir, labelname_extension), recursive=False))
+        self.data_name = [os.path.splitext(os.path.basename(data))[0] for data in self.data_list]
+
+        assert len(self.data_list) == len(self.label_list), 'The number of data and label must be equal.'
+
+        self.label_dir = label_dir
+        self.label_gray = label_gray
+
+    def make_triplet(self, idx):
+        from PIL import Image
+
+        img = Image.open(self.data_list[idx])
+        if self.label_gray:
+            gt = Image.open(self.label_list[idx]).convert('L')
+        else:
+            gt = Image.open(self.label_list[idx])
+        name = self.data_name[idx]
+
+        return img, gt, name

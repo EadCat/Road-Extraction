@@ -6,6 +6,7 @@ from parameters import tag_image, tag_label, tag_name, label_folder_name
 
 import random
 import os
+from typing import Union
 
 
 class AugManager(object):
@@ -18,20 +19,21 @@ class AugManager(object):
                 iaa.Sometimes(0.5, iaa.Fliplr(0.5)),
                 iaa.Sometimes(0.5, iaa.Flipud(0.5)),
                 iaa.Sometimes(0.5, iaa.Rotate((-50, 50)))
-            ])
+            ], random_order=True)
         self.transformSet = iaalist
         self.outscale = random.choice([0.8, 0.85, 0.9, 0.95])
 
-    def __call__(self, input_dict : {str : Image.Image}) -> dict:
-        image = np.array(input_dict[tag_image])
-        label = np.array(input_dict[tag_label])
+    def __call__(self, input_dict : {str : Union[Image.Image, np.ndarray]}) -> dict:
+        image, label = input_dict[tag_image], input_dict[tag_label]
+        image = np.array(image)
+        label = np.array(label)
 
         # size measure
         y_max = image.shape[0]
         x_max = image.shape[1]
 
         # np.ndarray -> imgaug.augmentables.segmaps.SegmentationMapsOnImage
-        label = SegmentationMapsOnImage(label, shape=label.shape)
+        label = SegmentationMapsOnImage(label, shape=image.shape)
 
         # augmentation
         zoomset = iaa.OneOf([
@@ -39,6 +41,7 @@ class AugManager(object):
             iaa.Affine(scale=self.outscale),  # zoom out
             RandomCrop(y_max, x_max).cut()  # zoom in
         ])
+
         image, label = zoomset(image=image, segmentation_maps=label)
         image, label = self.transformSet(image=image, segmentation_maps=label)
 
