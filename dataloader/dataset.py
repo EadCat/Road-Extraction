@@ -3,7 +3,7 @@ import os, glob
 
 from parameters import *
 
-__all__ = ['RoadDataset']
+__all__ = ['MetaDataset', 'RoadDataset']
 
 
 class MetaDataset(Dataset):

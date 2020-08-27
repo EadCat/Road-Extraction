@@ -6,8 +6,9 @@ import numpy as np
 
 from typing import Union
 
-__all__ = ['DictNormalize', 'Dict2Tensor',
-           'DictResize', 'AlphaKill']
+__all__ = ['Normalize', 'ToTensor', 'Resize', 'AlphaKill',
+           'DictNormalize', 'Dict2Tensor',
+           'DictResize', 'DictAlphaKill']
 
 
 class Normalize(object):
