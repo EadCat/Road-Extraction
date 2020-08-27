@@ -26,10 +26,10 @@ weight_save_directory = r'save'
 # ============================= model parameter control panel =============================
 # =============================== in training environment =================================
 params = OrderedDict()
-params['total_epochs'] = 100
+params['total_epochs'] = 200
 params['train_batch'] = 10
 params['valid_batch'] = 10
-params['learning_rate'] = 5e-6
+params['learning_rate'] = 1e-5
 params['num_classes'] = 1
 params['resized'] = (500, 500) # tuple
 params['mean'] = [0.485, 0.456, 0.406]
