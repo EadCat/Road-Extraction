@@ -43,6 +43,7 @@ class Evaluator:
         precision = torch.cat(self.precs, dim=0).mean(dim=0).view(-1)
         recall = torch.cat(self.recas, dim=0).mean(dim=0).view(-1)
         accuracy = torch.cat(self.accus, dim=0).mean(dim=0).view(-1)
-        f1_score = (2 * precision * recall)/(precision + recall)
+        f1_score_plot = (2 * precision * recall) / (precision + recall)
+        mean_f1_score = (2 * torch.mean(precision) * torch.mean(recall))/(torch.mean(precision) + torch.mean(recall))
 
-        return list(precision), list(recall), list(accuracy), list(f1_score), list(self.confidence)
+        return list(precision), list(recall), list(accuracy), list(f1_score_plot), mean_f1_score, list(self.confidence)

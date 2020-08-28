@@ -113,7 +113,7 @@ if __name__ == "__main__":
     # test parameter record
     util.snapshot_maker(test_params, os.path.join(dir_man.test(), 'test_model_snapshot.txt'))
 
-    precision, recall, accuracy, f1_score, confidence = evaluator.view()
+    precision, recall, accuracy, f1_score, mean_f1, confidence = evaluator.view()
 
     # print test spending time.
     print(f'{time.perf_counter() - test_start:.3f} s spended.')
@@ -131,6 +131,7 @@ if __name__ == "__main__":
     util.write_line(reca_Data, os.path.join(dir_man.test(), 'Recall.txt'))
     util.write_line(PR_Data, os.path.join(dir_man.test(), 'PR Curve.txt'))
     util.write_line(accu_Data, os.path.join(dir_man.test(), 'Accuracy.txt'))
+    util.write_line({'mean F1': mean_f1}, os.path.join(dir_man.test(), 'F1 Score.txt'))
     util.write_line(f1_Data, os.path.join(dir_man.test(), 'F1 Score.txt'))
 
     # plot
