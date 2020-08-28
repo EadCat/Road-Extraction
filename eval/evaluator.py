@@ -39,11 +39,21 @@ class Evaluator:
         else:
             print('wrong evaluator mode.')
 
-    def view(self):
+    def value(self):
         precision = torch.cat(self.precs, dim=0).mean(dim=0).view(-1)
         recall = torch.cat(self.recas, dim=0).mean(dim=0).view(-1)
         accuracy = torch.cat(self.accus, dim=0).mean(dim=0).view(-1)
-        f1_score_plot = (2 * precision * recall) / (precision + recall)
-        mean_f1_score = (2 * torch.mean(precision) * torch.mean(recall))/(torch.mean(precision) + torch.mean(recall))
+        f1_score = (2 * precision * recall) / (precision + recall)
+        return precision, recall, accuracy, f1_score
 
-        return list(precision), list(recall), list(accuracy), list(f1_score_plot), mean_f1_score, list(self.confidence)
+    def mean_data(self):
+        precision, recall, accuracy, f1_score = self.value()
+        mean_precision = torch.mean(precision)
+        mean_recall = torch.mean(precision)
+        mean_accuracy = torch.mean(accuracy)
+        mean_f1 = (2 * mean_precision * mean_recall) / (mean_precision + mean_recall)
+        return mean_precision, mean_recall, mean_accuracy, mean_f1
+
+    def plot_data(self):
+        precision, recall, accuracy, f1_score = self.value()
+        return list(precision), list(recall), list(accuracy), list(f1_score), list(self.confidence)

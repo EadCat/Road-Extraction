@@ -113,7 +113,8 @@ if __name__ == "__main__":
     # test parameter record
     util.snapshot_maker(test_params, os.path.join(dir_man.test(), 'test_model_snapshot.txt'))
 
-    precision, recall, accuracy, f1_score, mean_f1, confidence = evaluator.view()
+    mean_precision, mean_recall, mean_accuracy, mean_f1 = evaluator.mean_data()
+    precision, recall, accuracy, f1_score, confidence = evaluator.plot_data()
 
     # print test spending time.
     print(f'{time.perf_counter() - test_start:.3f} s spended.')
@@ -127,9 +128,14 @@ if __name__ == "__main__":
     f1_Data = iter2dict(confidence, f1_score)
 
     # record
+    util.write_line({'mean Precision': mean_precision}, os.path.join(dir_man.test(), 'Precision.txt'))
     util.write_line(prec_Data, os.path.join(dir_man.test(), 'Precision.txt'))
+    util.write_line({'mean Recall': mean_recall}, os.path.join(dir_man.test(), 'Recall.txt'))
     util.write_line(reca_Data, os.path.join(dir_man.test(), 'Recall.txt'))
+    util.write_line({'mean Precision': mean_precision}, os.path.join(dir_man.test(), 'PR Curve.txt'))
+    util.write_line({'mean Recall': mean_recall}, os.path.join(dir_man.test(), 'PR Curve.txt'))
     util.write_line(PR_Data, os.path.join(dir_man.test(), 'PR Curve.txt'))
+    util.write_line({'mean Accuracy': mean_accuracy}, os.path.join(dir_man.test(), 'Accuracy.txt'))
     util.write_line(accu_Data, os.path.join(dir_man.test(), 'Accuracy.txt'))
     util.write_line({'mean F1': mean_f1}, os.path.join(dir_man.test(), 'F1 Score.txt'))
     util.write_line(f1_Data, os.path.join(dir_man.test(), 'F1 Score.txt'))
