@@ -129,13 +129,13 @@ if __name__ == "__main__":
 
     # record
     util.write_line({'mean Precision': mean_precision}, os.path.join(dir_man.test(), 'mean_metric.txt'))
-    util.write_line(prec_Data, os.path.join(dir_man.test(), 'Precision.txt'))
     util.write_line({'mean Recall': mean_recall}, os.path.join(dir_man.test(), 'mean_metric.txt'))
+    util.write_line({'mean Accuracy': mean_accuracy}, os.path.join(dir_man.test(), 'mean_metric.txt'))
+    util.write_line({'mean F1 Score': mean_f1}, os.path.join(dir_man.test(), 'mean_metric.txt'))
+    util.write_line(prec_Data, os.path.join(dir_man.test(), 'Precision.txt'))
     util.write_line(reca_Data, os.path.join(dir_man.test(), 'Recall.txt'))
     util.write_line(PR_Data, os.path.join(dir_man.test(), 'PR Curve.txt'))
-    util.write_line({'mean Accuracy': mean_accuracy}, os.path.join(dir_man.test(), 'mean_metric.txt'))
     util.write_line(accu_Data, os.path.join(dir_man.test(), 'Accuracy.txt'))
-    util.write_line({'mean F1': mean_f1}, os.path.join(dir_man.test(), 'mean_metric.txt'))
     util.write_line(f1_Data, os.path.join(dir_man.test(), 'F1 Score.txt'))
 
     # plot
