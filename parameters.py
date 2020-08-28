@@ -36,6 +36,8 @@ params['resized'] = (500, 500) # tuple
 params['mean'] = [0.485, 0.456, 0.406]
 params['std'] = [0.229, 0.224, 0.225]
 params['pretrain'] = 'COCO 2017'  # only for writing record
+params['optimizer'] = 'Adam' # <- It must be set manually. (snapshot record)
+params['loss_function'] = 'BinaryCrossEntropyLoss'  # <- It must be set manually. (snapshot record)
 # =========================================================================================
 
 # ============================= model parameter control panel =============================

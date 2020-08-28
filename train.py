@@ -29,15 +29,15 @@ if __name__ == "__main__":
     environment = {}
     # ======================================= Directory Panel =============================================
     data_man = DataManager(os.getcwd())
-    mode = 'external_train'  # please set the mode. ['new', 'load', 'overlay', 'external_train']
+    mode = 'new'  # please set the mode. ['new', 'load', 'overlay', 'external_train']
     load_branch = None  # need 'load' or 'overlay' mode. you can set integer here.
     load_num = None  # need 'load' or 'overlay' mode. you can set integer here.
-    external_directory = r'/home/user/codes/Python/models/Semantic-Segmentation/DeepLabV3_ResNet50_COCO2017.pth'
+    # external_directory = r'/home/user/codes/Python/models/Semantic-Segmentation/DeepLabV3_ResNet50_COCO2017.pth' # need 'external_train' mode.
     # train
-    # dir_man = DirectoryManager(model_name=model_name, mode=mode, branch_num=load_branch,
-    #                            load_num=load_num)
+    dir_man = DirectoryManager(model_name=model_name, mode=mode, branch_num=load_branch,
+                               load_num=load_num)
     # external train
-    dir_man = DirectoryManager(model_name=model_name, mode=mode, external_weight=external_directory)
+    # dir_man = DirectoryManager(model_name=model_name, mode=mode, external_weight=external_directory)
     # =====================================================================================================
 
     # ============================================== model definition ==============================================
@@ -46,14 +46,17 @@ if __name__ == "__main__":
         params['resume_epoch'] = 1
         print('constructing network...')
         netend = net.NetEnd(num_classes=params['num_classes'])
-        network = net.ResNet101_DeeplabV3(netend, pretrain=permission['pretrain']) # <- model definition
+        network = net.ResNet50_DeeplabV3(netend, pretrain=permission['pretrain']) # <- model definition
 
     elif mode is 'external_train':
         print('start training from epoch 1.')
         params['resume_epoch'] = 1
         print('constructing network...')
+
+        # please define model here.
         netend = net.NetEnd(num_classes=params['num_classes'])
-        network = net.ResNet50_DeeplabV3(netend, pretrain=False)
+        network = net.ResNet50_DeeplabV3(netend, pretrain=True)
+
         path = dir_man.load()
         print(f'{dir_man.load()} loading...')
         network.load_state_dict((torch.load(path)))
@@ -94,10 +97,8 @@ if __name__ == "__main__":
         environment['gpu'] = False
     # ===============================================================================
 
-    # ========================== optimizer & loss function ==========================
+    # ========================== optimizer ==========================
     optimizer = torch.optim.Adam(network.parameters(), lr=params['learning_rate'])
-    params['optimizer'] = 'Adam' # <- It must be set manually. (snapshot record)
-    params['loss_function'] = 'BinaryCrossEntropyLoss'  # <- It must be set manually. (snapshot record)
     # ===============================================================================
 
     # =========================================== image pre-processing & load ==========================================
