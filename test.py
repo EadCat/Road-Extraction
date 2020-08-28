@@ -23,8 +23,8 @@ if __name__ == "__main__":
     data_man = DataManager(os.getcwd())  # Get test data directory
     # ===================================== load weights targeting panel =====================================
     # if mode is 'test', must be set.
-    epoch = 100  # epoch number of model you want to test.
-    branch_num = 2
+    epoch = 197  # epoch number of model you want to test.
+    branch_num = 4
     # =========================================================================================================
     # if mode is 'external_test', DirectoryManager(external_weight= set here!!)
     dir_man = DirectoryManager(model_name, mode='test', branch_num=branch_num, load_num=epoch)  # model_name is defined in <parameters.py>.
@@ -98,7 +98,7 @@ if __name__ == "__main__":
             output = model.forward(image)
 
         # sample
-        util.imgstore(output*255.0, nums=2, save_dir=dir_man.test_sample(), epoch=epoch, cls='test', filename=name)
+        util.imgstore(output*255.0, nums=1, save_dir=dir_man.test_sample(), epoch=epoch, cls='test', filename=name)
 
         # loss
         loss = binary_entropy_2d(output, label)
