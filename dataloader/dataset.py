@@ -19,7 +19,7 @@ class MetaDataset(Dataset):
         return len(self.data_list)
 
     def __str__(self):
-        print('instance of dataloader.dataset.PredDataset.')
+        print('instance of dataloader.dataset.MetaDataset.')
         for i, name in enumerate(self.data_name):
             print(f'{self.data_name[i]}, ', end='')
             if i % 5 == 4:
