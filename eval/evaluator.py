@@ -29,7 +29,7 @@ class Evaluator:
                 pred_cls = np.zeros(tuple(pred_tmp.shape))
                 mask_cls = np.zeros(tuple(mask_tmp.shape))
                 pred_cls[pred_tmp > self.confidence[j]] = 1.0
-                mask_cls[mask_tmp > 0.2] = 1.0
+                mask_cls[mask_tmp > 0.0] = 1.0
                 # pred_cls = (pred_tmp > self.confidence[j]).float()
                 TP = (pred_cls * mask_cls).sum() # [Batch X Height X Width] -> [Batch]
                 TN = ((pred_cls == 0.0) & (mask_tmp == 0.0)).sum()
