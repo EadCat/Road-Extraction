@@ -7,7 +7,7 @@ __all__ = ['model_name', 'tag_image', 'tag_label', 'tag_name',
            ]
 
 # model name information for save and load
-model_name = 'ResNet101-DeepLabV3'
+model_name = 'ResNet50-DeepLabV3'
 
 # dictionary key
 tag_image = 'image'
@@ -30,7 +30,7 @@ params = OrderedDict()
 params['total_epochs'] = 200
 params['train_batch'] = 10
 params['valid_batch'] = 10
-params['learning_rate'] = 5e-6
+params['learning_rate'] = 1e-5
 params['num_classes'] = 1
 params['resized'] = (500, 500) # tuple
 params['mean'] = [0.485, 0.456, 0.406]
