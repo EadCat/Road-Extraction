@@ -25,7 +25,9 @@ def write_line(dict_in:dict, dir:str):
                 value = float(value)
             if isinstance(key, float):
                 key = round(key, 4)
-            file.write(str(key) + ' : ' + str(round(value, 4)) + '\n')
+            if isinstance(value, float):
+                value = round(value, 4)
+            file.write(str(key) + ' : ' + str(value) + '\n')
 
 
 def cuda2np(tensor) -> np.ndarray:
