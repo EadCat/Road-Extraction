@@ -198,7 +198,7 @@ class DirectoryManager:
         return self.imgdir
 
     def test(self): # test base folder
-        test_base = os.path.join(self.branch(), 'test')
+        test_base = os.path.join(self.branch(), 'test', 'epoch_'+str(self.load_num))
         os.makedirs(test_base, exist_ok=True)
         return test_base
 
