@@ -23,7 +23,9 @@ def write_line(dict_in:dict, dir:str):
                 key = float(key)
             if isinstance(value, torch.Tensor):
                 value = float(value)
-            file.write(str(round(key, 4)) + ' : ' + str(round(value, 4)) + '\n')
+            if isinstance(key, float):
+                key = round(key, 4)
+            file.write(str(key) + ' : ' + str(round(value, 4)) + '\n')
 
 
 def cuda2np(tensor) -> np.ndarray:

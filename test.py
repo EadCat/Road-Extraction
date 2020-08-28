@@ -23,7 +23,7 @@ if __name__ == "__main__":
     data_man = DataManager(os.getcwd())  # Get test data directory
     # ===================================== load weights targeting panel =====================================
     # if mode is 'test', must be set.
-    epoch = 197  # epoch number of model you want to test.
+    epoch = 185  # epoch number of model you want to test.
     branch_num = 4
     # =========================================================================================================
     # if mode is 'external_test', DirectoryManager(external_weight= set here!!)
