@@ -24,8 +24,8 @@ if __name__ == "__main__":
     data_man = DataManager(os.getcwd())  # Get test data directory
     # ===================================== load weights targeting panel =====================================
     # if mode is 'test', must be set.
-    epoch = 185  # epoch number of model you want to test.
-    branch_num = 4
+    epoch = 195  # epoch number of model you want to test.
+    branch_num = 5
     # =========================================================================================================
     # if mode is 'external_test', DirectoryManager(external_weight= set here!!)
     dir_man = DirectoryManager(model_name, mode='test', branch_num=branch_num, load_num=epoch)  # model_name is defined in <parameters.py>.
@@ -34,7 +34,7 @@ if __name__ == "__main__":
     print(f'loading network...')
     netend = NetEnd(num_classes=params['num_classes'])  # set the number of classification.
     path = dir_man.load()
-    model = ResNet101_DeeplabV3(end_module=netend, pretrain=permission['pretrain'])
+    model = ResNet50_DeeplabV3(end_module=netend, pretrain=permission['pretrain'])
     model.load_state_dict((torch.load(path)))
 
     # GPU setting
@@ -81,7 +81,7 @@ if __name__ == "__main__":
     test_start = time.perf_counter()
     loss_dict = {}
 
-    mae = 0
+    # mae = 0
     evaluator = Evaluator(mode='binary')
 
     print(f'test start.')
@@ -108,7 +108,7 @@ if __name__ == "__main__":
         util.write_line({i+1:loss.item()}, os.path.join(dir_man.test(), 'model_loss.txt'))
 
         # evaluator recording
-        mae += torch.mean(torch.abs(output - label))
+        # mae += torch.mean(torch.abs(output - label))
         evaluator.add(pred=output, mask=label)
 
     # test parameter record
