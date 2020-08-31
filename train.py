@@ -15,7 +15,7 @@ from functions import loss_F
 from functions import utils
 from functions import augmentation
 from functions.plot import PlotGenerator
-from networks.nets import NetEnd, ResNet101_DeeplabV3, ResNet101_FCN, ResNet50_DeeplabV3
+from networks.nets import *
 
 # Basic Utility
 import os
@@ -29,9 +29,9 @@ if __name__ == "__main__":
     environment = {}
     # ======================================= Directory Panel =============================================
     data_man = DataManager(os.getcwd())
-    mode = 'new'  # please set the mode. ['new', 'load', 'overlay', 'external_train']
-    load_branch = None  # need 'load' or 'overlay' mode. you can set integer here.
-    load_num = None  # need 'load' or 'overlay' mode. you can set integer here.
+    mode = 'load'  # please set the mode. ['new', 'load', 'overlay', 'external_train']
+    load_branch = 4  # need 'load' or 'overlay' mode. you can set integer here.
+    load_num = 185  # need 'load' or 'overlay' mode. you can set integer here.
     # external_directory = r'/home/user/codes/Python/models/Semantic-Segmentation/DeepLabV3_ResNet50_COCO2017.pth' # need 'external_train' mode.
     # train
     dir_man = DirectoryManager(model_name=model_name, mode=mode, branch_num=load_branch,
@@ -68,11 +68,11 @@ if __name__ == "__main__":
         params['resume_epoch'] = load_num + 1
         # model load
         print('constructing network...')
-        netend = NetEnd(num_classes=params['num_classes'])
+        netend = ClassifierEnd(num_classes=params['num_classes'])
         path = dir_man.load()
         network = ResNet101_DeeplabV3(end_module=netend, pretrain=permission['pretrain']) # <- model definition
         print(f'{dir_man.load()} loading...')
-        network.load_state_dict((torch.load(path)))
+        network.load_state_dict((torch.load(path)), strict=False)
 
     else:
         print("please modify 'mode' variable.")

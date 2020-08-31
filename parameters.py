@@ -7,7 +7,7 @@ __all__ = ['model_name', 'tag_image', 'tag_label', 'tag_name',
            ]
 
 # model name information for save and load
-model_name = 'ResNet50-DeepLabV3'
+model_name = 'ResNet101-DeepLabV3'
 
 # dictionary key
 tag_image = 'image'
