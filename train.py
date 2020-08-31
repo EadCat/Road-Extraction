@@ -29,9 +29,9 @@ if __name__ == "__main__":
     environment = {}
     # ======================================= Directory Panel =============================================
     data_man = DataManager(os.getcwd())
-    mode = 'load'  # please set the mode. ['new', 'load', 'overlay', 'external_train']
-    load_branch = 4  # need 'load' or 'overlay' mode. you can set integer here.
-    load_num = 185  # need 'load' or 'overlay' mode. you can set integer here.
+    mode = 'overlay'  # please set the mode. ['new', 'load', 'overlay', 'external_train']
+    load_branch = 6  # need 'load' or 'overlay' mode. you can set integer here.
+    load_num = 192  # need 'load' or 'overlay' mode. you can set integer here.
     # external_directory = r'/home/user/codes/Python/models/Semantic-Segmentation/DeepLabV3_ResNet50_COCO2017.pth' # need 'external_train' mode.
     # train
     dir_man = DirectoryManager(model_name=model_name, mode=mode, branch_num=load_branch,
@@ -73,6 +73,9 @@ if __name__ == "__main__":
         network = ResNet101_DeeplabV3(end_module=netend, pretrain=permission['pretrain']) # <- model definition
         print(f'{dir_man.load()} loading...')
         network.load_state_dict((torch.load(path)), strict=False)
+        # freeze
+        for module in network.parameters():
+            module.requires_grad = False
 
     else:
         print("please modify 'mode' variable.")
