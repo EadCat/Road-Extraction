@@ -12,9 +12,11 @@ if __name__ == "__main__":
     # ------------------------------------------------------------------------------------------------------------------
 
     # ========================================== dir & param ==========================================
+    branch_num = 'branch_7'
+    model_name = r'ResNet101-DeepLabV3_epoch_350.pth'
     data_dir = r'/home/user/Desktop/test_dataset'
-    weight_dir = r'./save/branch_4/ResNet101-DeepLabV3_epoch_197.pth'
-    dst_dir = os.path.join(data_dir, 'predicton/branch_4')
+    weight_dir = os.path.join(r'./save', branch_num, model_name)
+    dst_dir = os.path.join(data_dir, 'predicton/', branch_num)
     store_num = 10
     the_name = os.path.splitext(os.path.basename(weight_dir))[0]
     assert test_params['test_batch'] >= store_num, 'batch size must be bigger than the number of storing image.'
@@ -48,7 +50,7 @@ if __name__ == "__main__":
     # =========================================== Model Load ==========================================
     netend = NetEnd(1)
     model = ResNet101_DeeplabV3(end_module=netend, pretrain=permission['pretrain'])
-    model.load_state_dict(torch.load(weight_dir))
+    model.load_state_dict(torch.load(weight_dir), strict=False)
     # =================================================================================================
 
     # ------------------------------------------------------------------------------------------------------------------

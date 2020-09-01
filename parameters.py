@@ -27,7 +27,7 @@ save_directory = r'save'
 # ============================= model parameter control panel =============================
 # =============================== in training environment =================================
 params = OrderedDict()
-params['total_epochs'] = 300
+params['total_epochs'] = 800
 params['train_batch'] = 10
 params['valid_batch'] = 10
 params['learning_rate'] = 1e-5

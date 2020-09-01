@@ -46,11 +46,16 @@ class ClassifierEnd(nn.Module):
 
 
 class ResNet101_DeeplabV3(nn.Module):
-    def __init__(self, end_module, keyword='out', pretrain=False):
+    def __init__(self, end_module, keyword='out', pretrain=False,
+                 freeze=False):
         super(ResNet101_DeeplabV3, self).__init__()
         self.deeplab = models.deeplabv3_resnet101(pretrained=pretrain,
                                                   progress=True,
                                                   num_classes=21)
+        if freeze:
+            for module in self.deeplab.parameters():
+                module.requires_grad = False
+            print("module frozen.")
         self.end_module = end_module
         self.output = None
         self.key = keyword
@@ -70,11 +75,16 @@ class ResNet101_DeeplabV3(nn.Module):
 
 
 class ResNet50_DeeplabV3(nn.Module):
-    def __init__(self, end_module, keyword='out', pretrain=False):
+    def __init__(self, end_module, keyword='out', pretrain=False,
+                 freeze=False):
         super(ResNet50_DeeplabV3, self).__init__()
         self.deeplab = models.deeplabv3_resnet50(pretrained=pretrain,
                                                  progress=True,
                                                  num_classes=21)
+        if freeze:
+            for module in self.deeplab.parameters():
+                module.requires_grad = False
+            print("module frozen.")
         self.end_module = end_module
         self.output = None
         self.key = keyword
@@ -94,11 +104,16 @@ class ResNet50_DeeplabV3(nn.Module):
 
 
 class ResNet101_FCN(nn.Module):
-    def __init__(self, end_module, keyword='out', pretrain=False):
+    def __init__(self, end_module, keyword='out', pretrain=False,
+                 freeze=False):
         super(ResNet101_FCN, self).__init__()
         self.resnet = models.fcn_resnet101(pretrained=pretrain,
                                           progress=True,
                                           num_classes=21)
+        if freeze:
+            for module in self.resnet.parameters():
+                module.requires_grad = False
+            print("module frozen.")
         self.end_module = end_module
         self.output = None
         self.key = keyword
