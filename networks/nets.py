@@ -20,6 +20,7 @@ class NetEnd(nn.Module):
         out = self.final(out)
         return out
 
+
 class ClassifierEnd(nn.Module):
     def __init__(self, num_classes:int):
         super(ClassifierEnd, self).__init__()
@@ -42,7 +43,6 @@ class ClassifierEnd(nn.Module):
         out = self.final(out)
 
         return out
-
 
 
 class ResNet101_DeeplabV3(nn.Module):

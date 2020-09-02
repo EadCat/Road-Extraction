@@ -191,6 +191,7 @@ class PlotGenerator:
 
         for line in lines:
             key, value = line.split(std)
+            key = int(key)
             value = float(value)
             text_dict[key] = value  # data type str
 
@@ -250,6 +251,17 @@ class PlotGenerator:
 
     def set(self, idx:int) -> SetInfo:
         return self.setlist[idx]
+
+    def x_control(self, idx:int, pull:int, update=False):
+        keys = list(self.datalist[idx].keys())
+        values = list(self.datalist[idx].values())
+        keys = [int(k) - pull for k in keys]
+        data_dict = {}
+        for key, value in zip(keys, values):
+            data_dict[key] = value
+        if update:
+            self.datalist[idx] = data_dict
+        return data_dict
 
 def iter2dict(iter1, iter2) -> dict:
     # group two iterable data of the same size into a dictionary.
