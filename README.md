@@ -1,7 +1,6 @@
 # Road Extraction Project
 
-## from Satellite Observation (not completed.)
+## from Satellite Observation (Interrupted Project)
 
 2020-08-24 created.
 
-Working...
